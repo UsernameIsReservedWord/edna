@@ -36,4 +36,14 @@ public class Main {
     public String getResultFilepath(String path) {
         return getResultFilepath(path, 10);
     }
+
+    public int getLinesCount(String path) {
+        int count = 0;
+        try {
+            count = Files.readAllLines(Paths.get(path)).size();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }
