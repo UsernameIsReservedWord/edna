@@ -40,6 +40,6 @@ public class SingleTest {
     @Test
     public void negativeAmountOfLinesTest() {
         String res = mainTest.getResultFilepath(PATH, -1);
-        Assert.assertEquals(mainTest.getLinesCount(res), 0);
+        Assert.assertEquals(res, "Задано отрицательное кол-во строк");
     }
 }

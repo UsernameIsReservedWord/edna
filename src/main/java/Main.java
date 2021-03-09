@@ -1,10 +1,12 @@
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -13,21 +15,25 @@ public class Main {
         try {
             File sourceFile = new File(path);
             resultPath = sourceFile.getParent().concat("/res_").concat(sourceFile.getName());
-            BufferedReader reader = Files.newBufferedReader(sourceFile.toPath());
             Files.deleteIfExists(Paths.get(resultPath));
             FileWriter writer = new FileWriter(resultPath);
-            int lineSize = Files.readAllLines(sourceFile.toPath()).size();
+            int lineSize = getLinesCount(path);
             if (rows > lineSize) {
                 rows = lineSize;
             }
-            for (int i = 0; i < rows; i++) {
-                writer.write(reader.readLine().concat(System.lineSeparator()));
+            List<String> sourceLines = Files.lines(sourceFile.toPath())
+                    .collect(Collectors.toList())
+                    .subList(0, rows);
+            Collections.shuffle(sourceLines);
+            for (String line : sourceLines) {
+                writer.write(line.concat(System.lineSeparator()));
             }
-            reader.close();
             writer.close();
         } catch (NoSuchFileException e) {
             return "Файл отсутствует";
-        } catch (IOException e) {
+        } catch (IllegalArgumentException e) {
+            return "Задано отрицательное кол-во строк";
+        }  catch (IOException e) {
             e.printStackTrace();
         }
         return resultPath;
