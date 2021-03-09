@@ -32,7 +32,7 @@ public class Main {
         } catch (NoSuchFileException e) {
             return "Файл отсутствует";
         } catch (IllegalArgumentException e) {
-            return "Задано отрицательное кол-во строк";
+            return "Неверно задано кол-во строк";
         }  catch (IOException e) {
             e.printStackTrace();
         }
